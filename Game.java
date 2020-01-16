@@ -1,4 +1,5 @@
-
+import java.util.ArrayList;
+import java.util.HashMap;
 /**
  *  This class is the main class of the "World of Zuul" application. 
  *  "World of Zuul" is a very simple, text based adventure game.  Users 
@@ -21,7 +22,13 @@ public class Game
     private Parser parser;
     private Room currentRoom;
     private Item currentItem;
-        
+    private ArrayList<String> items; 
+    private HashMap<String, Integer> itemValue;
+    public int wood = 0;
+    public int sand = 0;
+    public int stone = 0;
+    public int iron = 0;
+    public int diamond = 0;    
     /**
      * Create the game and initialise its internal map.
      */
@@ -29,7 +36,7 @@ public class Game
     {
         createRooms();
         parser = new Parser();
-        createItems();
+
     }
 
     /**
@@ -38,26 +45,33 @@ public class Game
     private void createRooms()
     {
         Room forest, winter, desert, jungle, jungle_tempel, village, savanna, house, cave, mineshaft, end, nether1, nether2, nether3, nether4, nether5, nether6;
-      
+
         // create the rooms
-        forest = new Room("You are now in the forest");
-        winter= new Room("You are in a winter biome");
-        desert = new Room("This is a sandy place, looks like a desert");
-        jungle = new Room("this looks like a jungle");
-        jungle_tempel = new Room("You found a hidden jungle tempel, maybe there are some secrets here.");
-        village= new Room("You are now in a nice looking village, say hi to the people here!");
-        savanna = new Room("You are in a Savanna");
-        house = new Room("Welcome in you're own house");
-        cave= new Room("You are under the ground, in a cave.");
-        mineshaft= new Room("This is a MineShaft");
-        end = new Room("This is the end, kill the dragon and finish the game.");
-        nether1 = new Room("You are now in the Nether");
-        nether2 = new Room("You are now in the Nether2");
-        nether3 = new Room("You are now in the Nether3");
-        nether4 = new Room("You are now in the Nether4");
-        nether5 = new Room("You are now in the Nether");
-        nether6 = new Room("Look an portal, a way out!");
-        
+
+        //wood = 1
+        //sand = 2
+        //stone = 3
+        //diamond = 4
+        //iron 5
+        //null = 0
+        forest = new Room("You are now in the forest", 1, 1);
+        winter= new Room("You are in a winter biome", 2, 1);
+        desert = new Room("This is a sandy place, looks like a desert", 3, 2);
+        jungle = new Room("this looks like a jungle", 4, 1);
+        jungle_tempel = new Room("You found a hidden jungle tempel, maybe there are some secrets here.", 5, 0);
+        village= new Room("You are now in a nice looking village, say hi to the people here!", 6, 4);
+        savanna = new Room("You are in a Savanna", 7, 1);
+        house = new Room("Welcome in you're own house", 8, 0);
+        cave= new Room("You are under the ground, in a cave.", 9, 3);
+        mineshaft= new Room("This is a MineShaft", 10, 5);
+        end = new Room("This is the end, kill the dragon and finish the game.", 11, 0);
+        nether1 = new Room("You are now in the Nether", 12, 0);
+        nether2 = new Room("You are now in the Nether2", 13, 0);
+        nether3 = new Room("You are now in the Nether3", 14, 0);
+        nether4 = new Room("You are now in the Nether4", 15, 0);
+        nether5 = new Room("You are now in the Nether", 16, 0);
+        nether6 = new Room("Look an portal, a way out!", 17, 0);
+
         // initialise room exits
         forest.setExit("north", village);
         forest.setExit("east", winter);
@@ -109,15 +123,12 @@ public class Game
         nether6.setExit("west", nether3);
 
         currentRoom = forest;  // start game outside
-    }
-    private void createItems(){
-        Item wood, stone, iron, diamond, sand;//kan nog meer toevoegd worden maar dit gaat om het idee, dit kan je doen door heel simpel der een item achter te zetten en te decaleren
-        wood = new Item("Wood");
-        stone = new Item("Stone");
-        iron = new Item("Iron");
-        diamond = new Item("Diamond");
-        sand = new Item("Sand");
-        currentItem = wood;
+        ArrayList<String> items = new ArrayList<String>();
+        items.add("wood");
+        items.add("sand");
+        items.add("stone");
+        items.add("diamond");
+        items.add("iron");
     }
 
     /**
@@ -129,7 +140,7 @@ public class Game
 
         // Enter the main command loop.  Here we repeatedly read commands and
         // execute them until the game is over.
-                
+
         boolean finished = false;
         while (! finished) {
             Command command = parser.getCommand();
@@ -144,7 +155,7 @@ public class Game
     private void printWelcome()
     {
         System.out.println();
-        System.out.println("Welcome in you're new survival world");
+        System.out.println("Welcome in your new survival world");
         System.out.println("Textcraft is a survival game, where you need to collect stuff.");
         System.out.println("Eventually you have to go to the end, and kill the Ender Dragon.");
         System.out.println("Type 'help' if you need help.");
@@ -177,10 +188,15 @@ public class Game
             wantToQuit = quit(command);
         }
         else if (commandWord.equals("use")){
-            printUse();
+            increment();
+
         }
         else if (commandWord.equals("items")){
             ItemToGet();
+
+        }
+        else if (commandWord.equals("inv")){
+            inventory();
         }
         // else command not recognised.
         return wantToQuit;
@@ -192,30 +208,29 @@ public class Game
      * Print out some help information.
      * Here we print some stupid, cryptic message and a list of the 
      * command words.
-     */
-    private void printUse(){
-     System.out.println("Hier kun je wat mee bezig gaan om shit te hakken");
-     System.out.println(currentItem.getItemDescription());
-    }
+     */ 
+
     private void ItemToGet(){
-         if(currentRoom.getShortDescription().equals("You are now in the forest")){
-         System.out.println("You can get here wood");}
-         else if(currentRoom.getShortDescription().equals("You are in a winter biome")){
-         System.out.println("You can get here wood");}
-         else if(currentRoom.getShortDescription().equals("This is a sandy place, looks like a desert")){
-         System.out.println("You can get here sand");}
-         else if(currentRoom.getShortDescription().equals("You found a hidden jungle tempel, maybe there are some secrets here.")){
-         System.out.println("You can get here diamonds");}
+        //if(currentRoom.getShortDescription().equals("You are now in the forest")){
+        if(currentRoom.getRoomID()==(1)){
+            System.out.println("You can get here " + currentRoom.getItemName());}
+        else if(currentRoom.getShortDescription().equals("You are in a winter biome")){
+            System.out.println("You can get here " + currentRoom.getItemName());}
+        else if(currentRoom.getShortDescription().equals("This is a sandy place, looks like a desert")){
+            System.out.println("You can get here " + currentRoom.getItemName());}
+        else if(currentRoom.getShortDescription().equals("You found a hidden jungle tempel, maybe there are some secrets here.")){
+            System.out.println("You can get here " + currentRoom.getItemName());}
         else if(currentRoom.getShortDescription().equals("this looks like a jungle")){
-            System.out.println("You can get here wood");}
+            System.out.println("You can get here " + currentRoom.getItemName());}
         else if(currentRoom.getShortDescription().equals("You are under the ground, in a cave.")){
-            System.out.println("You can get here stone");}
+            System.out.println("You can get here " + currentRoom.getItemName());}
         else if(currentRoom.getShortDescription().equals("You are now in the Nether4")){
             System.out.println("You can get here a potion");} //Speedpot
         else if(currentRoom.getShortDescription().equals("You are now in the Nether3")){
             System.out.println("You can get here a potion");} //Strengthpot
-    else{System.out.println("You can't get anything here");}
-}
+        else{System.out.println("You can't get anything here");}
+    }
+
     private void printHelp() 
     {
         System.out.println(currentRoom.getLongDescription());
@@ -223,7 +238,7 @@ public class Game
         System.out.println("In everyroom there are diffrent objects to farm");
         System.out.println();
         System.out.println("Your command words are:");
-        System.out.println("go quit help use");
+        System.out.println("go quit help use items inv");
     }
 
     /** 
@@ -267,4 +282,77 @@ public class Game
             return true;  // signal that we want to quit
         }
     }
+
+    private void increment(){
+        String melding = "Een succes berijkt";
+        if(currentRoom.getItemID() == (1) && wood < 64){
+            wood ++;
+            System.out.println(melding);
+        }
+        else if(currentRoom.getItemID() == (2) && wood < 64){
+            sand ++;
+            System.out.println(melding);
+        }
+        else if(currentRoom.getItemID() == (3) && wood < 64){
+            stone ++; 
+            System.out.println(melding);
+        }
+        else if(currentRoom.getItemID() == (4) && wood < 64){
+            diamond ++;
+            System.out.println(melding);
+        }
+        else if(currentRoom.getItemID() == (5) && wood < 64){
+            iron ++; 
+            System.out.println(melding);
+        }
+        else{ System.out.println("You can't carry this anymore");
+        }
+
+    }
+
+    private int show(){
+        int item = 0;
+        if(currentRoom.getItemID() == (1)){
+            item = wood;
+            //System.out.println(wood); 
+        }
+        else if(currentRoom.getItemID() == (2)){
+            item = sand;
+            //System.out.println(sand); 
+        }
+        else if(currentRoom.getItemID() == (3)){
+            item = stone;
+            //System.out.println(stone); 
+        }
+        else if(currentRoom.getItemID() == (4)){
+            item = diamond;
+            //System.out.println(diamond);
+        }
+        else if(currentRoom.getItemID() == (5)){
+            item = iron;
+            //System.out.println(iron); 
+        }
+        return item;
+
+    }
+
+    private void inventory(){
+        HashMap<String, Integer> itemValue = new HashMap<String, Integer>();
+        itemValue.put("wood", wood);
+        itemValue.put("sand", sand);
+        itemValue.put("stone", stone);
+        itemValue.put("diamond", diamond);
+        itemValue.put("iron", iron);
+
+        for(String i : itemValue.keySet()){
+            if(itemValue.get(i) > 0)
+                System.out.println(i + " : "  + itemValue.get(i));
+        }
+
+        /*for(int i = 0; i < items.size(); i++){
+        System.out.println(items.get(i) + " : " + show());
+        }
+         */
+    }
 }
+

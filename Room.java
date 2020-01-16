@@ -1,5 +1,6 @@
 import java.util.Set;
 import java.util.HashMap;
+import java.util.ArrayList;
 
 /**
  * Class Room - a room in an adventure game.
@@ -18,7 +19,20 @@ import java.util.HashMap;
 public class Room 
 {
     private String description;
-    private HashMap<String, Room> exits;        // stores exits of this room.
+    private HashMap<String, Room> exits; // stores exits of this room.
+    private int roomID;
+    private int itemID;
+    private ArrayList<Item> items;
+
+    private int roomItem;
+    private String itemName;
+    private int itemWeight; 
+    private int number;
+    
+    public int sand;
+    private int stone;
+    private int iron;
+    public int diamond;
 
     /**
      * Create a room described "description". Initially, it has
@@ -26,10 +40,14 @@ public class Room
      * "an open court yard".
      * @param description The room's description.
      */
-    public Room(String description) 
+    public Room(String description, int roomID, int itemID) 
     {
+        this.roomID = roomID;
+        this.itemID = itemID;
         this.description = description;
         exits = new HashMap<>();
+        items = new ArrayList<Item>();
+        
     }
 
     /**
@@ -87,5 +105,66 @@ public class Room
     {
         return exits.get(direction);
     }
-}
 
+    public int getRoomID(){
+        return roomID;   
+    }
+
+    public int getItemID(){
+        return itemID;   
+    }
+
+    public void createItems(){
+        if(getItemID() == (1)){
+            itemName = "wood"; 
+            int wood = 0;
+            itemWeight = 1;
+        }
+        else if(getItemID() == (2)){
+            itemName = "sand"; 
+            int sand = 0;
+            itemWeight = 1;
+        }  
+        else if(getItemID() == (3)){
+            itemName = "stone"; 
+            int stone = 0;
+            itemWeight = 1;
+        }  
+        else if(getItemID() == (4)){
+            itemName = "diamond"; 
+            int diamond = 0;
+            itemWeight = 5;
+        }  
+        else if(getItemID() == (5)){
+            itemName = "iron"; 
+            int iron = 0;
+            itemWeight = 3;
+        }  
+    }
+
+    public String getItemName(){
+        if(getItemID() == (1)){
+            itemName = "wood";
+        } 
+        else if(getItemID() == (2)){
+            itemName = "sand";
+        }
+        else if(getItemID() == (3)){
+            itemName = "stone";
+        } 
+        else if(getItemID() == (4)){
+            itemName = "diamond";
+        }
+        else if(getItemID() == (5)){
+            itemName = "iron";
+        }
+        return itemName;
+    }
+
+    public int getItemNumber(){
+        if(getItemID() == (1)){
+
+        }
+        return number;
+    }
+}
