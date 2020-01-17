@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.*;
 /**
  *  This class is the main class of the "World of Zuul" application. 
  *  "World of Zuul" is a very simple, text based adventure game.  Users 
@@ -58,7 +59,7 @@ public class Game
         winter= new Room("You are in a winter biome", 2, 1);
         desert = new Room("This is a sandy place, looks like a desert", 3, 2);
         jungle = new Room("this looks like a jungle", 4, 1);
-        jungle_tempel = new Room("You found a hidden jungle tempel, maybe there are some secrets here.", 5, 0);
+        jungle_tempel = new Room("You have found a hidden jungle tempel, and you see a big diamond, pick it up!.", 5, 4);
         village= new Room("You are now in a nice looking village, say hi to the people here!", 6, 4);
         savanna = new Room("You are in a Savanna", 7, 1);
         house = new Room("Welcome in you're own house", 8, 0);
@@ -198,6 +199,10 @@ public class Game
         else if (commandWord.equals("inv")){
             inventory();
         }
+        else if (commandWord.equals("back")){
+            //Iets();
+        }    
+        
         // else command not recognised.
         return wantToQuit;
     }
@@ -214,19 +219,19 @@ public class Game
         //if(currentRoom.getShortDescription().equals("You are now in the forest")){
         if(currentRoom.getRoomID()==(1)){
             System.out.println("You can get here " + currentRoom.getItemName());}
-        else if(currentRoom.getShortDescription().equals("You are in a winter biome")){
+        else if(currentRoom.getRoomID()==(2)){
             System.out.println("You can get here " + currentRoom.getItemName());}
-        else if(currentRoom.getShortDescription().equals("This is a sandy place, looks like a desert")){
+        else if(currentRoom.getRoomID()==(3)){
             System.out.println("You can get here " + currentRoom.getItemName());}
-        else if(currentRoom.getShortDescription().equals("You found a hidden jungle tempel, maybe there are some secrets here.")){
+        else if(currentRoom.getRoomID()==(5)){
             System.out.println("You can get here " + currentRoom.getItemName());}
-        else if(currentRoom.getShortDescription().equals("this looks like a jungle")){
+        else if(currentRoom.getRoomID()==(4)){
             System.out.println("You can get here " + currentRoom.getItemName());}
-        else if(currentRoom.getShortDescription().equals("You are under the ground, in a cave.")){
+        else if(currentRoom.getRoomID()==(9)){
             System.out.println("You can get here " + currentRoom.getItemName());}
-        else if(currentRoom.getShortDescription().equals("You are now in the Nether4")){
+        else if(currentRoom.getRoomID()==(15)){
             System.out.println("You can get here a potion");} //Speedpot
-        else if(currentRoom.getShortDescription().equals("You are now in the Nether3")){
+        else if(currentRoom.getRoomID()==(14)){
             System.out.println("You can get here a potion");} //Strengthpot
         else{System.out.println("You can't get anything here");}
     }
@@ -235,10 +240,10 @@ public class Game
     {
         System.out.println(currentRoom.getLongDescription());
         System.out.println("You can try to get some objects");
-        System.out.println("In everyroom there are diffrent objects to farm");
+        System.out.println("In everyroom there are different objects to farm");
         System.out.println();
         System.out.println("Your command words are:");
-        System.out.println("go quit help use items inv");
+        System.out.println("go quit help use items inv back");
     }
 
     /** 
@@ -284,7 +289,7 @@ public class Game
     }
 
     private void increment(){
-        String melding = "Een succes berijkt";
+        String melding = "Een succes bereikt";
         if(currentRoom.getItemID() == (1) && wood < 64){
             wood ++;
             System.out.println(melding);
@@ -297,19 +302,33 @@ public class Game
             stone ++; 
             System.out.println(melding);
         }
-        else if(currentRoom.getItemID() == (4) && wood < 64){
-            diamond ++;
+        else if(currentRoom.getItemID() == (5) && wood < 64){
+            iron ++;
             System.out.println(melding);
         }
-        else if(currentRoom.getItemID() == (5) && wood < 64){
-            iron ++; 
-            System.out.println(melding);
+        else if(currentRoom.getItemID() == (4) && wood < 64){
+            System.out.println("The diamond was a trap! Herobrine has imprisoned you. Pay half of your items or die");
+            System.out.println("pay or die");
+            //wood = wood / 2;
+            //sand = sand / 2;
+            //stone = stone  / 2;
+            //iron = iron / 2;
+            //diamond = diamond / 2;
+            
+            
+           
+            
+          
+            
         }
         else{ System.out.println("You can't carry this anymore");
         }
 
     }
 
+    
+    
+    
     private int show(){
         int item = 0;
         if(currentRoom.getItemID() == (1)){
@@ -329,8 +348,8 @@ public class Game
             //System.out.println(diamond);
         }
         else if(currentRoom.getItemID() == (5)){
-            item = iron;
-            //System.out.println(iron); 
+            item = diamond;
+            //System.out.println(diamond); 
         }
         return item;
 
